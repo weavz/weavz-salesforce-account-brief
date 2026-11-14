@@ -1,4 +1,18 @@
-# Salesforce Account Brief
+# Salesforce MCP agent with PydanticAI: Salesforce Account Brief
+
+<!-- weavz:discovery:start -->
+
+Use Salesforce with PydanticAI through Weavz MCP. This salesforce account brief example returns a report from bounded app reads with source references.
+
+**Framework:** PydanticAI · **Language:** Python · **MCP modes:** Tool Mode and Code Mode
+
+Use another framework:
+
+- [Salesforce MCP with Semantic Kernel Python](https://github.com/weavz/weavz-semantic-kernel/blob/main/docs/app-recipes.md#salesforce-mcp-with-semantic-kernel-python)
+
+[MCP app and framework directory](https://github.com/weavz/mcp-examples/blob/main/docs/integrations.md) · [All examples](https://github.com/weavz/mcp-examples) · [Weavz MCP guide](https://weavz.io/docs/guides/agent-framework-examples)
+
+<!-- weavz:discovery:end -->
 
 Prepare a short account brief for the matching Northwind account records. Summarize segment and service context, and flag missing fields instead of filling them by inference.
 
