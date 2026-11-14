@@ -1,0 +1,93 @@
+{
+  "id": "salesforce-account-brief",
+  "title": "Salesforce Account Brief",
+  "prompt": "Prepare a short account brief for the matching Northwind account records. Summarize segment and service context, and flag missing fields instead of filling them by inference.",
+  "instructions": "Run only the supplied read-only Account search condition and summarize the returned sample. Keep records separate if names are similar; do not update Salesforce, send email, or claim a full CRM search beyond the response. Treat account facts as synthetic and cite the account record URL.",
+  "fixture_summary": "Synthetic Salesforce search returns three matching account records: one enterprise account with a renewal concern, one subsidiary, and one historical duplicate candidate.",
+  "inputs": {
+    "object": "Account",
+    "where_clause": "Name LIKE '%Northwind%'"
+  },
+  "steps": [
+    {
+      "id": "find_northwind_accounts",
+      "alias": "accounts",
+      "integration": "salesforce",
+      "action": "find_records_by_query",
+      "tool": "accounts__find_records_by_query",
+      "arguments": {
+        "object": "Account",
+        "where_clause": "Name LIKE '%Northwind%'"
+      },
+      "records": [
+        {
+          "id": "sf-account-71",
+          "app": "Salesforce",
+          "title": "Northwind Systems",
+          "detail": "Synthetic account: enterprise SaaS, Berlin region, renewal review requested for December.",
+          "url": "https://example.com/records/sf-account-71",
+          "object": "Account",
+          "account_id": "sf-account-71",
+          "segment": "enterprise",
+          "region": "Berlin",
+          "renewal_review": true,
+          "record_status": "active"
+        },
+        {
+          "id": "sf-account-72",
+          "app": "Salesforce",
+          "title": "Northwind Systems Europe",
+          "detail": "Synthetic subsidiary record; parent link is present but billing contact is blank.",
+          "url": "https://example.com/records/sf-account-72",
+          "object": "Account",
+          "account_id": "sf-account-72",
+          "segment": "enterprise",
+          "region": "Europe",
+          "renewal_review": false,
+          "record_status": "active",
+          "billing_contact_present": false
+        },
+        {
+          "id": "sf-account-73",
+          "app": "Salesforce",
+          "title": "Northwind Systems (Legacy)",
+          "detail": "Synthetic historical record marked inactive; do not merge based on name alone.",
+          "url": "https://example.com/records/sf-account-73",
+          "object": "Account",
+          "account_id": "sf-account-73",
+          "segment": "unknown",
+          "region": "unknown",
+          "renewal_review": false,
+          "record_status": "inactive"
+        }
+      ]
+    }
+  ],
+  "metrics": [
+    {
+      "name": "matching_account_records",
+      "op": "count"
+    },
+    {
+      "name": "active_accounts_requiring_renewal_review",
+      "op": "count",
+      "where": {
+        "record_status": "active",
+        "renewal_review": true
+      }
+    },
+    {
+      "name": "active_accounts_missing_billing_contact",
+      "op": "count",
+      "where": {
+        "record_status": "active",
+        "billing_contact_present": false
+      }
+    }
+  ],
+  "expected_metrics": {
+    "matching_account_records": 3,
+    "active_accounts_requiring_renewal_review": 1,
+    "active_accounts_missing_billing_contact": 1
+  }
+}
